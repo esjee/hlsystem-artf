@@ -6,6 +6,7 @@ improved are appreciated.
 
 Controls
 ---
+Keys | Action
 --- | ---
 wasd | move cam
 op   | dec/inc generation
