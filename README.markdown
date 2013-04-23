@@ -6,6 +6,7 @@ improved are appreciated.
 
 Controls
 ---
+--- | ---
 wasd | move cam
 op   | dec/inc generation
 kl   | dec/inc angle
