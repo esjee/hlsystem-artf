@@ -20,10 +20,10 @@ e    | dragon
 
 ToDo
 ---
-Last line isn't drawn with LineStrips (all except koch)
-Koch is bugged, not sure why
-Controls suck
-More fractals!
+- Last line isn't drawn with LineStrips (all except koch)
+- Koch is bugged, not sure why
+- Controls suck
+- More fractals!
 
 License
 ---
