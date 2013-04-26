@@ -28,3 +28,5 @@ ToDo
 License
 ---
 MIT license, see LICENSE for details
+
+![screenshot](scrot.png)
