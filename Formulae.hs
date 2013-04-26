@@ -1,10 +1,12 @@
 module Formulae
 (
- Formula, vertices, vertType, emptyFormula,
- sierpinski,
- cantor,
- koch,
+ Formula,
+ vertices,
+ vertType,
+ emptyFormula,
+ sierpinski, cantor, koch,
  dragon,
+ plant,
  ) where
 
 import Graphics.Rendering.OpenGL
@@ -141,3 +143,37 @@ _dragonV turtle@(Turtle x y dir) (f:fs) l a
 	| f == '-' = _dragonV (turtleLeft turtle a) fs l a
 	| f == '+' = _dragonV (turtleRight turtle a) fs l a
 	| otherwise = _dragonV turtle fs l a
+
+-- Fractal plant
+-- Start: X
+-- Rules: (X -> F-[x]+x]+F[+FX]-X) (F->FF)
+-- Symbols:
+-- F :: draw forward
+-- - :: turn left
+-- + :: turn right
+-- X :: do nothing
+-- [ :: save current position and angle
+-- ] :: restore position and angle
+plant :: Int -> GLfloat -> GLfloat -> Formula
+plant n l a = Formula [vertices] Lines
+	where
+		vertices = _plantV (Turtle 0 0 0) (_plantF n) l a []
+
+_plantF :: Int -> [Char]
+_plantF 0 = "X"
+_plantF n = concat $ map (sub) (_plantF (n-1))
+	where
+		sub :: Char -> [Char]
+		sub 'X' = "F-[[X]+X]+F[+FX]-X"
+		sub 'F' = "FF"
+		sub n = n:""
+
+_plantV :: Turtle -> [Char] -> GLfloat -> GLfloat -> [Turtle] -> [Vertex2 GLfloat]
+_plantV _ [] _ _ _ = []
+_plantV turtle@(Turtle x y dir) (f:fs) l a stack
+	| f == 'F' = Vertex2 x y : _plantV (turtleForward turtle l) fs l a stack
+	| f == '-' = _plantV (turtleLeft turtle a) fs l a stack
+	| f == '+' = _plantV (turtleRight turtle a) fs l a stack
+	| f == '[' = _plantV turtle fs l a (turtle:stack)
+	| f == ']' = _plantV (head stack) fs l a (tail stack)
+	| otherwise = _plantV turtle fs l a stack

@@ -29,7 +29,7 @@ data ARTF = ARTF {
 }
 
 initialARTF :: ARTF
-initialARTF = ARTF Alive (Camera (0.0, 0.0, 0.0)) koch 1 0.1 90 ""
+initialARTF = ARTF Alive (Camera (0.0, 0.0, 0.0)) plant 6 0.1 6 ""
 
 handleUserInput :: ARTF -> ARTF
 handleUserInput artf = artf
@@ -66,6 +66,7 @@ gameLoop artf@(ARTF flags (Camera (cx, cy, cz)) f n l a ui) w = do
 	clear [ColorBuffer, DepthBuffer]
 	loadIdentity
 	translate $ Vector3 cx cy cz
+	--rotate (90 :: GLfloat) $ Vector3 0 0 1
 
 	mapM_ (renderPrimitive (vertType vert) . mapM_ vertex) (vertices vert)
 
@@ -111,6 +112,7 @@ handleKeyDown artf@(ARTF flags oldcam@(Camera (cx, cy, cz)) f n l a ui) key sym 
 	| key == SDLK_t = (ARTF flags oldcam cantor n l a ui)
 	| key == SDLK_f = (ARTF flags oldcam koch n l a ui)
 	| key == SDLK_e = (ARTF flags oldcam dragon n l a ui)
+	| key == SDLK_g = (ARTF flags oldcam plant 6 l 25 ui)
 	| key == SDLK_p = incGenerations 1 artf
 	| key == SDLK_o = incGenerations (-1) artf
 	| key == SDLK_r = initialARTF
